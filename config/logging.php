@@ -35,6 +35,20 @@ return [
     */
 
     'channels' => [
+        'system' => [
+            'error' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/system/system-error.log'),
+                'level' => env('LOG_LEVEL', 'debug'),
+                'days' => 14,
+            ],
+            'debug' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/system/system-debug.log'),
+                'level' => 'debug',
+                'days' => 14,
+            ],
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

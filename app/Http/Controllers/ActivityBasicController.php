@@ -22,7 +22,7 @@ class ActivityBasicController extends Controller
         $source = ActivityBasic::with('activityType');
         request()->merge(['total' => $source->count()]);
 
-        return new ActivityBasicCollection($source->skip(0)->take(10)->orderBy('id')->get());
+        return (new ActivityBasicCollection($source->skip(0)->take(10)->orderBy('id')->get()))->additional(['fuck' => 'FUCK']);
     }
 
     public function filter(Request $request) 
@@ -68,7 +68,14 @@ class ActivityBasicController extends Controller
         $skip = $page > 1 ? ($page - 1) * $itemPage : 0;
         // return response()->json(['data~' => $source->get()->toArray(), 'skip' => $skip, 'itemPage' => $itemPage], 200);
 
-        return new ActivityBasicCollection($source->skip($skip)->take($itemPage)->orderBy($sortBy, ($sortDesc ? 'DESC' : 'ASC'))->get());
+        // $add = [
+        //     'meta' => [
+        //         'self' => [
+        //             'headers' => [['text' => '功能', 'value' => '']]
+        //         ]
+        //     ]
+        // ];
+        return (new ActivityBasicCollection($source->skip($skip)->take($itemPage)->orderBy($sortBy, ($sortDesc ? 'DESC' : 'ASC'))->get()));
     }
 
     /**

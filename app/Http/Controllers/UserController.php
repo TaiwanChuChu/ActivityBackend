@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Driver\FileDriver;
+use App\Models\FileStorage;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
+    public function __construct(FileDriver $fileDriver)
+    {
+        $this->fileDriver = $fileDriver;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function userInfo(Request $request)
     {
-        //
+        return UserResource::collection(User::with('file_storages')->where('id', '=', $request->user()->toArray()['id'])->get());
     }
 
     /**
@@ -132,11 +140,26 @@ class UserController extends Controller
             $request->merge(['password' => \Hash::make($request->password)]);
         }
 
+        if($request->has('headshot')) {
+            if($request->hasFile('headshot') === false) {
+                return response()->json(['message' => '未提供欲上傳檔案'], 400);
+            } else {
+                $options = [
+                    'path' => 'FileStorage',
+                    'token' => 'headshot',
+                    'single' => true,
+                ];
+                if(count($err = $this->fileDriver->storage($request->file('headshot'), User::class, $user->id, $options)) > 0) {
+                    return response()->json(['message' => '上傳失敗!', 'err' => $err], 400);
+                }
+            }
+        }
+        
         $data = $request->only('name', 'password', 'email');
 
         User::where('id', '=', $user->id)->update($data);
-
-        return response()->json(['msg' => 'ok'], 200);
+        
+        return response()->json(['message' => '資料更新成功!'], 200);
     }
 
     /**

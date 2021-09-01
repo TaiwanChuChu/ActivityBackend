@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\ActivityType;
-use App\Models\ActivityApply;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -57,5 +54,9 @@ class User extends Authenticatable
     public function findForPassport($username)
     {
         return $this->where('u_no', $username)->first();
+    }
+
+    public function file_storages() {
+        return $this->morphMany(FileStorage::class, 'file_storage');
     }
 }

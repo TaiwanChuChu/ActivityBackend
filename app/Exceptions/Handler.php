@@ -35,7 +35,7 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            \Log::error("SYSTEM_ERROR:{$e->getMessage()}");
         });
     }
 }

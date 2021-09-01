@@ -27,11 +27,13 @@ class UserRequest extends FormRequest
         ],
         'PUT' => [
             'password' => 'required|string|max:255|sometimes',
+            'headshot' => 'required|image|max:6144|sometimes',
         ],
         'DEFAULT' => [
             'password' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'headshot' => 'required|image',
         ]
     ];
 
@@ -59,6 +61,7 @@ class UserRequest extends FormRequest
             'max' => ':attribute欄位長度限制為 :max字!',
             'string' => ':attribute欄位型別限制為字串!',
             'email' => ':attribute欄位型別限制為email!',
+            'image' => ':attribute格式不符!',
         ];
     }
 
@@ -68,6 +71,7 @@ class UserRequest extends FormRequest
             'password' => '密碼',
             'name' => '姓名',
             'email' => 'Email',
+            'headshot' => '個人照片',
         ];
     }
 }
