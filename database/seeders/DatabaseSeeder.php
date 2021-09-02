@@ -2,13 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\ActivityType;
 use App\Models\ActivityApply;
 use App\Models\ActivityBasic;
+use App\Models\ActivityType;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Database\Factories\ActivityTypeFactory;
-use Database\Factories\ActivityApplyFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
 
         // ActivityType::factory(2)->has(User::factory()->count(1))->create();
         // ActivityType::factory()
