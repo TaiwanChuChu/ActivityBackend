@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\ActivityApply;
 use Illuminate\Http\Response;
 use App\Http\Requests\ActivityApplyRequest;
+use App\Http\Resources\ActivityAppliesCollection;
+use App\Http\Resources\ActivityAppliesResource;
+use App\Models\ActivityBasic;
 
 class ActivityApplyController extends Controller
 {
@@ -15,10 +18,10 @@ class ActivityApplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        dd(ActivityApply::with('activityType')->paginate(10));
-        return response()->json(ActivityApply::paginate(10));
+        $source = ActivityApply::with('activityBasics')->where('user_id', '=', auth()->user()->id);
+        return new ActivityAppliesCollection($source->get());
     }
 
     /**
@@ -29,7 +32,7 @@ class ActivityApplyController extends Controller
      */
     public function store(ActivityApplyRequest $request)
     {
-        $result = ActivityApply::insert($request->all());
+        $result = ActivityApply::insert(['activity_id' => $request->activity_id, 'CreateID' => auth()->user()->id, 'user_id' => auth()->user()->id]);
         if($result) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料新增成功!'], Response::HTTP_OK);
         }

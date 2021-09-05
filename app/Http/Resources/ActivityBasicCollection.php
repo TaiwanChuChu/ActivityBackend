@@ -32,8 +32,9 @@ class ActivityBasicCollection extends ResourceCollection
                             'value' => 'data-table-expand',
                         ],
                         [
-                            'text' => 'key',
+                            'text' => '功能',
                             'value' => 'id',
+                            'sortable' => false,
                             //         align: 'start',
                             //         filterable: false,
                             // sortable: true,

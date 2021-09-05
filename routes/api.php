@@ -23,7 +23,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/user/logout', 'UserController@logout')->name('user.logout');
 });
 
-Route::prefix('activity')->group(function(){
+Route::middleware('auth:api')->prefix('activity')->group(function(){
     Route::apiResource('ActivityType', 'ActivityTypeController');
     Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');
     Route::apiResource('ActivityBasic', 'ActivityBasicController');

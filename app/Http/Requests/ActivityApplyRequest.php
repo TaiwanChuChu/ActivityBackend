@@ -25,7 +25,6 @@ class ActivityApplyRequest extends FormRequest
     {
         return [
             'activity_id' => 'required|integer',
-            'user_id' => 'required|integer',
         ];
     }
 
@@ -40,7 +39,6 @@ class ActivityApplyRequest extends FormRequest
     {
         return [
             'activity_id' => '活動ID',
-            'user_id' => '報名者ID',
         ];
     }
 }

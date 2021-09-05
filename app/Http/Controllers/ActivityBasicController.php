@@ -53,6 +53,20 @@ class ActivityBasicController extends Controller
         if($request->filled('searchCondition.q_edate')) {
             $source->where('edate', '<=', $request->searchCondition['q_edate']);
         }
+
+        $source->whereNotExists(function($query) {
+            $query->select(\DB::raw(1))
+                ->from('activity_applies')
+                ->whereColumn('activity_basics.id', '=', 'activity_applies.activity_id')
+                ->where('activity_applies.user_id', '=', auth()->user()->id);
+        });
+
+        $source->whereExists(function($query) {
+            $query->select(\DB::raw(1))
+                ->from('activity_types')
+                ->whereColumn('activity_basics.activity_type_id', '=', 'activity_types.id')
+                ->where('activity_types.state', '=', '1');
+        });
         
         $options = $request->options;
         $activityTypeOp = ActivityType::where('state', '=', true)->select('id AS value', 'type_name AS text')->get()->toArray();
@@ -66,15 +80,7 @@ class ActivityBasicController extends Controller
         $page = $options['page'] ?? 0;
         $itemPage = $options['itemsPerPage'] ?? 10;
         $skip = $page > 1 ? ($page - 1) * $itemPage : 0;
-        // return response()->json(['data~' => $source->get()->toArray(), 'skip' => $skip, 'itemPage' => $itemPage], 200);
 
-        // $add = [
-        //     'meta' => [
-        //         'self' => [
-        //             'headers' => [['text' => '功能', 'value' => '']]
-        //         ]
-        //     ]
-        // ];
         return (new ActivityBasicCollection($source->skip($skip)->take($itemPage)->orderBy($sortBy, ($sortDesc ? 'DESC' : 'ASC'))->get()));
     }
 

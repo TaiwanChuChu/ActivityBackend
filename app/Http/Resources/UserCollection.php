@@ -25,7 +25,6 @@ class UserCollection extends ResourceCollection
                     'id' => 'key',
                     'u_no' => '帳號',
                     'name' => '姓名',
-                    'access_token' => 'token',
                     'email' => 'Email',
                 ],
             ],

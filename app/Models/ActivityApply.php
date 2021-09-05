@@ -12,6 +12,10 @@ class ActivityApply extends Model
     use HasFactory;
 
     public function activityBasics() {
-        return $this->belongsTo(ActivityBasic::class);
+        return $this->belongsTo(ActivityBasic::class, 'activity_id', 'id');
     }
+
+    // public function users() {
+    //     return $this->hasMany(User::class);
+    // }
 }

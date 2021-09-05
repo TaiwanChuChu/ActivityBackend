@@ -36,6 +36,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             \Log::error("SYSTEM_ERROR:{$e->getMessage()}");
+            return response()->json(['msg' => '伺服器發生錯誤!'], 500);
         });
     }
 }
