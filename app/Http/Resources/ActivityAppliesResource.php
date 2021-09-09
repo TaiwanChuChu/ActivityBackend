@@ -17,6 +17,7 @@ class ActivityAppliesResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'activity_id' => $this->activity_id,
             'CreateID' => $this->when($this->CreateID, function() {
                 return (new UserResource(User::find($this->CreateID)))->name;
@@ -24,7 +25,8 @@ class ActivityAppliesResource extends JsonResource
             'user_id' => $this->when($this->user_id, function() {
                 return (new UserResource(User::find($this->user_id)))->name;
             }),
-            'activityBasics' => $this->whenLoaded('activityBasics'),
+            'activityBasics' => $this->whenAppended('activityBasics'),
+            'activityBasics2' => $this->whenLoaded('activityBasics'),
         ];
     }
 }

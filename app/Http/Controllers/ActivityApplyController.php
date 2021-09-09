@@ -24,6 +24,72 @@ class ActivityApplyController extends Controller
         return new ActivityAppliesCollection($source->get());
     }
 
+    public function filter(Request $request) 
+    {
+        // $source = ActivityApply::from('activity_applies AS a')
+        //             ->leftjoin('activity_basics AS b', 'a.activity_id', '=', 'b.id')
+        //             ->leftjoin('activity_types AS c', 'b.activity_type_id', '=', 'c.id')
+        //             ->select('a.activity_id', 'a.user_id', 'b.theme', 'c.type_name');
+
+        $with = [
+            'activityBasics' => function($query) use ($request) {
+                if($request->filled('searchCondition.q_theme')) {
+                    $query->where('theme', 'like', '%' . $request->searchCondition['q_theme'] . '%');
+                }
+            },
+            'activityTypes' => function($query) use ($request) {
+                if($request->filled('searchCondition.type_code')) {
+                    $query->where('type_code', 'like', '%' . $request->searchCondition['type_code'] . '%');
+                }
+                $query->where('state', '=', '1');
+            },
+        ];
+        $source = ActivityApply::with($with);
+        dd($source->toSql());
+
+        // if($request->filled('searchCondition.q_theme')) {
+        //     $source->where('theme', 'like', '%' . $request->searchCondition['q_theme'] . '%');
+        // }
+
+        // if($request->filled('searchCondition.q_activityType')) {
+        //     $source->where('activity_type_id', '=', $request->searchCondition['q_activityType']);
+        // }
+
+        // if($request->filled('searchCondition.q_apply_sdate')) {
+        //     $source->where('apply_sdate', '>=', $request->searchCondition['q_apply_sdate']);
+        // }
+
+        // if($request->filled('searchCondition.q_apply_edate')) {
+        //     $source->where('apply_edate', '<=', $request->searchCondition['q_apply_edate']);
+        // }
+
+        // if($request->filled('searchCondition.q_sdate')) {
+        //     $source->where('sdate', '>=', $request->searchCondition['q_sdate']);
+        // }
+
+        // if($request->filled('searchCondition.q_edate')) {
+        //     $source->where('edate', '<=', $request->searchCondition['q_edate']);
+        // }
+
+        $source->where('user_id', '=', auth()->user()->id);
+        
+        $options = $request->options;
+        $activityTypeOp = ActivityType::where('state', '=', true)->select('id AS value', 'type_name AS text')->get()->toArray();
+
+        $request->merge(['total' => $source->count()]);
+        $request->merge(['activityTypeOption' => array_merge([['value' => false, 'text' => '全部']], $activityTypeOp)]);
+
+        $sortDesc = $options['sortDesc'] ? $options['sortDesc'][0] : true;
+        $sortBy = $options['sortBy'] ? $options['sortBy'][0] : 'id';
+
+        $page = $options['page'] ?? 0;
+        $itemPage = $options['itemsPerPage'] ?? 10;
+        $skip = $page > 1 ? ($page - 1) * $itemPage : 0;
+
+        return response()->json(['data' => $source->skip($skip)->take($itemPage)->get()], 200);
+        return (new ActivityAppliesCollection($source->skip($skip)->take($itemPage)->get()));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

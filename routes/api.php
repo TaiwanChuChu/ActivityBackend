@@ -28,4 +28,5 @@ Route::middleware('auth:api')->prefix('activity')->group(function(){
     Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');
     Route::apiResource('ActivityBasic', 'ActivityBasicController');
     Route::apiResource('ActivityApply', 'ActivityApplyController');
+    Route::post('ActivityApply/filter', 'ActivityApplyController@filter')->name('ActivityApply.filter');
 });

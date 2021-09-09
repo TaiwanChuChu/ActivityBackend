@@ -35,8 +35,8 @@ class ActivityBasicCollection extends ResourceCollection
                             'text' => '功能',
                             'value' => 'id',
                             'sortable' => false,
-                            //         align: 'start',
-                            //         filterable: false,
+                            // align: 'start',
+                            // filterable: false,
                             // sortable: true,
                         ],
                         [
