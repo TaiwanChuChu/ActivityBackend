@@ -17,7 +17,7 @@ class ActivityBasicCollection extends ResourceCollection
         return parent::toArray($request);
     }
 
-    public function with($request) 
+    public function with($request)
     {
         return [
             'meta' => [
@@ -27,10 +27,11 @@ class ActivityBasicCollection extends ResourceCollection
                 ],
                 'self' => [
                     'headers' => [
-                        [
-                            'text' => 'openDetail',
-                            'value' => 'data-table-expand',
-                        ],
+//                        [
+//                            'text' => 'openDetail',
+//                            'value' => 'data-table-expand',
+//                            'sortable' => false,
+//                        ],
                         [
                             'text' => '功能',
                             'value' => 'id',
@@ -80,7 +81,7 @@ class ActivityBasicCollection extends ResourceCollection
                             'text' => '活動時間訖',
                             'value' => 'edate',
                         ],
-                    ], 
+                    ],
                 ],
                 'activityType' => [
                     'headers' => [

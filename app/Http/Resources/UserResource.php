@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'u_no' => $this->u_no,
             'name' => $this->name,
             'email' => $this->email,
-            'headshot' => $this->when($this->whenLoaded('file_storages') instanceof \Illuminate\Http\Resources\MissingValue === false, function(){
+            'headshot' => $this->when($this->whenLoaded('file_storages') instanceof \Illuminate\Http\Resources\MissingValue === false, function() {
                 return FileStorageResource::collection($this->whenLoaded('file_storages'))->where('token', '=', 'headshot');
             }),
         ];

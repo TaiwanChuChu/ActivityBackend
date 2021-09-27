@@ -15,6 +15,7 @@ class ActivityApply extends Model
         return $this->belongsTo(ActivityBasic::class, 'activity_id', 'id');
     }
 
+    // 這邊是往回找
     public function activityTypes() {
         // hasManyThrough 當本身與它表無關聯，可利用中繼表去查找(one to many)
         return $this->hasManyThrough(
