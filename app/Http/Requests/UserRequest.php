@@ -33,7 +33,7 @@ class UserRequest extends FormRequest
             'password' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'headshot' => 'required|image',
+            'headshot' => 'required|image|sometimes',
         ]
     ];
 

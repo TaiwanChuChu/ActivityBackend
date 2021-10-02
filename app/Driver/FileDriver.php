@@ -45,6 +45,8 @@ class FileDriver
             ));
             if ($target->count() > 0) {
                 File::delete($target->first()->path . $target->first()->encode_name);
+            } else {
+                FileStorage::insert($file_list);
             }
             $target->update($file_list);
         } else {

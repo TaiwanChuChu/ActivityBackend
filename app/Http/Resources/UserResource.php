@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'headshot' => $this->when($this->whenLoaded('file_storages') instanceof \Illuminate\Http\Resources\MissingValue === false, function() {
                 return FileStorageResource::collection($this->whenLoaded('file_storages'))->where('token', '=', 'headshot');
             }),
+            'isAdmin' => $request->user()->hasRole('ActivityAdmin'),
         ];
     }
 }

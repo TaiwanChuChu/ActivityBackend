@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/file/{encode_name}', 'FileStorageController@renderFile')->name('file.render');
+Route::post('/user', 'UserController@store')->name('user.store');
 
 Route::middleware('auth:api')->group(function(){
     Route::get('/user', 'UserController@userInfo')->name('user.info');
     Route::put('/user/{user}', 'UserController@update')->name('user.update');
-    Route::post('/user', 'UserController@store')->name('user.store');
     Route::post('/user/logout', 'UserController@logout')->name('user.logout');
 });
 

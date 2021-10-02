@@ -76,7 +76,7 @@ class UserController extends Controller
         //     'scope'         => null,
         // ]);
 
-        // // Fire off the internal request. 
+        // // Fire off the internal request.
         // $token = Request::create(
         //     'oauth/token',
         //     'POST'
@@ -154,11 +154,11 @@ class UserController extends Controller
                 }
             }
         }
-        
+
         $data = $request->only('name', 'password', 'email');
 
         User::where('id', '=', $user->id)->update($data);
-        
+
         return response()->json(['message' => '資料更新成功!'], 200);
     }
 
