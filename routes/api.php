@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/file/{encode_name}', 'FileStorageController@renderFile')->name('file.render');
 Route::post('/user', 'UserController@store')->name('user.store');
 
-Route::middleware('auth:api')->group(function(){
-    Route::get('/user', 'UserController@userInfo')->name('user.info');
-    Route::put('/user/{user}', 'UserController@update')->name('user.update');
-    Route::post('/user/logout', 'UserController@logout')->name('user.logout');
+Route::middleware('auth:api')->prefix('user')->group(function(){
+    Route::get('/', 'UserController@userInfo')->name('user.info');
+    Route::put('/{user}', 'UserController@update')->name('user.update');
+    Route::post('/logout', 'UserController@logout')->name('user.logout');
+    Route::get('/menus', 'MenuController@getMenuListByUser')->name('user.menus');
 });
 
 Route::middleware('auth:api')->prefix('activity')->group(function(){
