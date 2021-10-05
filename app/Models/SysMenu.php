@@ -20,6 +20,6 @@ class SysMenu extends Model
 
     public function children()
     {
-        return $this->hasMany(self::class, 'id', 'upper_id');
+        return $this->hasMany(self::class, 'upper_id', 'id');
     }
 }

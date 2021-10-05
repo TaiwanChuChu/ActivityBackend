@@ -72,11 +72,28 @@ class MenuController extends Controller
     public function getMenuListByUser()
     {
         $RoleId = auth()->user()->roles->pluck('id')->toArray();
-        return new MenuCollection(SysMenu::from('sys_menus')->whereExists(function ($query) use ($RoleId) {
-            $query->select(DB::raw(1))
-                ->from('role_has_menus')
-                ->whereColumn('sys_menus.id', 'role_has_menus.sys_menu_id')
-                ->whereIn('role_has_menus.role_id', $RoleId);
-        })->get());
+
+        return new MenuCollection(
+            SysMenu::from('sys_menus as a')->with([
+                'children' => function ($query) use ($RoleId) {
+                    $query->from('sys_menus')
+                        ->whereExists(function ($query) use ($RoleId) {
+                            $query->select(DB::raw(1))
+                                ->from('role_has_menus')
+                                ->whereColumn('sys_menus.id', 'role_has_menus.sys_menu_id')
+                                ->whereIn('role_has_menus.role_id', $RoleId);
+                        });
+                }
+            ])->whereExists(function ($query) use ($RoleId) {
+                $query->from('sys_menus as b')
+                    ->whereColumn('a.id', 'b.upper_id')
+                    ->whereExists(function ($query) use ($RoleId) {
+                        $query->select(DB::raw(1))
+                            ->from('role_has_menus')
+                            ->whereColumn('b.id', 'role_has_menus.sys_menu_id')
+                            ->whereIn('role_has_menus.role_id', $RoleId);
+                    });
+            })->get()
+        );
     }
 }

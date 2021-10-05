@@ -16,4 +16,13 @@ class MenuCollection extends ResourceCollection
     {
         return parent::toArray($request);
     }
+
+    public function with($request)
+    {
+        return [
+            'headers' => [
+                'action' => '123',
+            ]
+        ];
+    }
 }
