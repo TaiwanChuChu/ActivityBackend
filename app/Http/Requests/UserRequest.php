@@ -7,20 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize(Request $request)
-    {
-        switch($request->method) {
-            case 'PUT':
-                return $this->user()->can('update', $this->user);
-        }
-        return true;
-    }
-
     protected $rules = [
         'POST' => [
             'u_no' => 'required|unique:App\Models\User|string|max:255',
@@ -38,16 +24,35 @@ class UserRequest extends FormRequest
     ];
 
     /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize(Request $request)
+    {
+        switch($request->method) {
+            case 'PUT':
+                return $this->user()->can('update', $this->user);
+        }
+        return true;
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
+     * @throws \Exception
      */
     public function rules(Request $request)
     {
         return $this->getRuleByMethod($request->method);
     }
 
-    public function getRuleByMethod($method) {
+    /**
+     * @throws \Exception
+     */
+    public function getRuleByMethod($method): array
+    {
         if(array_key_exists($method, $this->rules) === false) {
             throw new \Exception('Error!');
         }

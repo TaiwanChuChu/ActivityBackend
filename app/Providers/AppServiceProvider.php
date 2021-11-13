@@ -24,11 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-         \DB::listen(function($query) {
-//             return response()->json(['query' => $query], 200);
-             Log::channel('system.debug')->debug('SQL: ' . $query->sql);
-             Log::channel('system.debug')->debug('Bindings: ' . json_encode($query->bindings));
-             Log::channel('system.debug')->debug('-----------------------------------------------');
-         });
+//         \DB::listen(function($query) {
+////             return response()->json(['query' => $query], 200);
+//             Log::channel('system.debug')->debug('SQL: ' . $query->sql);
+//             Log::channel('system.debug')->debug('Bindings: ' . json_encode($query->bindings));
+//             Log::channel('system.debug')->debug('-----------------------------------------------');
+//         });
     }
 }

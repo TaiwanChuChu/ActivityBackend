@@ -28,7 +28,7 @@ class ActivityAppliesCollection extends ResourceCollection
                     'headers' => [
                         [
                             'text' => '功能',
-                            'value' => 'id',
+                            'value' => 'actions',
                             'sortable' => false,
                             // align: 'start',
                             // filterable: false,

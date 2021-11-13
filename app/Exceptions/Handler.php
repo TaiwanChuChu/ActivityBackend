@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,6 +38,11 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             \Log::error("SYSTEM_ERROR:{$e->getMessage()}");
             return response()->json(['msg' => '伺服器發生錯誤!'], 500);
+        });
+
+        $this->renderable(function(NotFoundHttpException $e){
+           \Log::error("幹你娘基八毛咧: {$e->getMessage()}");
+           return response()->json(['msg' => '伺服器發生錯誤!'], 500);
         });
     }
 }

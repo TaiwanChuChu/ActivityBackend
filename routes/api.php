@@ -1,5 +1,6 @@
 <?php
 
+use App\Repositories\Contract\ActivityTypeRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('/test', function(ActivityTypeRepositoryInterface $activityTypeRepository) {
+    dd(123456);
+});
 Route::get('/file/{encode_name}', 'FileStorageController@renderFile')->name('file.render');
 Route::post('/user', 'UserController@store')->name('user.store');
 
@@ -26,8 +29,9 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
 
 Route::middleware('auth:api')->prefix('activity')->group(function(){
     Route::apiResource('ActivityType', 'ActivityTypeController');
-    Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');
+    Route::post('ActivityType/filter', 'ActivityTypeController@filter')->name('ActivityType.filter');
     Route::apiResource('ActivityBasic', 'ActivityBasicController');
+    Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');
     Route::apiResource('ActivityApply', 'ActivityApplyController');
     Route::post('ActivityApply/filter', 'ActivityApplyController@filter')->name('ActivityApply.filter');
 });

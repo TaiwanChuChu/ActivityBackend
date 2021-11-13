@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ActivityTypeRequest extends FormRequest
 {
@@ -11,9 +12,34 @@ class ActivityTypeRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
+    }
+
+    protected function defaultRule(): array
+    {
+        return [
+            'type_code' => [
+                'required',
+                'max:10',
+                Rule::unique('activity_types'),
+            ],
+            'type_name' => 'required|max:50',
+            'state' => 'boolean',
+        ];
+    }
+
+    protected function ruleByPost(): array
+    {
+        return [];
+    }
+
+    protected function ruleByPut(): array
+    {
+        return [
+            'type_code' => false,
+        ];
     }
 
     /**
@@ -21,24 +47,31 @@ class ActivityTypeRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            'type_code' => 'required|max:10',
-            'type_name' => 'required|max:50',
-            'state' => 'required|boolean',
-        ];
+        $rules = [];
+        switch (request()->method) {
+            case 'POST':
+                $rules = $this->ruleByPost();
+                break;
+            case 'PUT':
+                $rules = $this->ruleByPut();
+                break;
+        }
+        return array_filter(array_merge($this->defaultRule(), $rules));
     }
 
-    public function messages() {
+    public function messages(): array
+    {
         return [
             'required' => ':attribute欄位為必填欄位!',
             'max' => ':attribute欄位長度限制為 :max字!',
             'boolean' => ':attribute欄位型別限制為boolean!',
+            'unique' => ':attribute欄位不可重複!',
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'type_code' => '活動類別代碼',

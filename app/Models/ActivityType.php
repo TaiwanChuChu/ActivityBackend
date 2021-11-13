@@ -2,26 +2,32 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\ActivityApply;
-use App\Models\ActivityBasic;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ActivityType extends Model
+class ActivityType extends BaseModel
 {
     use HasFactory;
+
+    protected $fillable = [
+        'id', 'type_code', 'type_name', 'state', 'CreateID'
+    ];
+
+    protected $casts = [
+        'state' => 'boolean',
+    ];
 
     public static function newFactory()
     {
         return \Database\Factories\ActivityTypeFactory::new();
     }
 
-    public function activityBasic() {
+    public function activityBasic()
+    {
         return $this->hasMany(ActivityBasic::class, 'activity_type_id');
     }
 
-    public function activityApplies() {
+    public function activityApplies()
+    {
         // hasManyThrough 當本身與它表無關聯，可利用中繼表去查找(one to many)
         return $this->hasManyThrough(
             ActivityApply::class, // 與中繼表關聯的表，跟自己沒有直接關聯
