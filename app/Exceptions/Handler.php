@@ -40,9 +40,9 @@ class Handler extends ExceptionHandler
             return response()->json(['msg' => '伺服器發生錯誤!'], 500);
         });
 
-        $this->renderable(function(NotFoundHttpException $e){
-           \Log::error("幹你娘基八毛咧: {$e->getMessage()}");
-           return response()->json(['msg' => '伺服器發生錯誤!'], 500);
-        });
+//        $this->renderable(function(NotFoundHttpException $e){
+//           \Log::error("幹你娘基八毛咧: {$e->getMessage()}");
+//           return response()->json(['msg' => '伺服器發生錯誤!'], 500);
+//        });
     }
 }

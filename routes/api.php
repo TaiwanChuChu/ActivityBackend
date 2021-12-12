@@ -29,6 +29,7 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
 
 Route::middleware('auth:api')->prefix('activity')->group(function(){
     Route::apiResource('ActivityType', 'ActivityTypeController');
+    Route::delete('ActivityType/delete/Multi', 'ActivityTypeController@deleteMulti');
     Route::post('ActivityType/filter', 'ActivityTypeController@filter')->name('ActivityType.filter');
     Route::apiResource('ActivityBasic', 'ActivityBasicController');
     Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');

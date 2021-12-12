@@ -36,7 +36,7 @@ abstract class Repository implements RepositoryInterface
 
     public function exists($id): bool
     {
-        return $this->findById($id) instanceof ModelNotFoundException || true;
+        return !$this->findById($id) instanceof ModelNotFoundException;
     }
 
     public function create(array $data): bool
@@ -46,21 +46,23 @@ abstract class Repository implements RepositoryInterface
 
     public function update($id, array $data): bool
     {
-        if ($this->exists($id)) {
-            $this->model->exists = true;
-            $this->model->setTargetId($id);
-            return $this->model->update($data);
-        }
-        return false;
+        return tap($this->model->where($this->model->getKeyName(), '=', $id)->first(), function ($instance) use ($data) {
+            if($instance) {
+                $instance->fill($data)->save();
+            }
+        }) != null;
     }
 
-    public function delete($id): ?bool
+    public function delete($id): bool
     {
-        if ($this->exists($id)) {
-            $this->model->exists = true;
-            $this->model->setTargetId($id);
-            return $this->model->delete();
+        return $this->model->destroy($id) > 0;
+    }
+
+    public function deleteMulti(array $ids): bool
+    {
+        if(count($ids) <= 0) {
+            return false;
         }
-        return false;
+        return $this->model->destroy($ids) > 0;
     }
 }

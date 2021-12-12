@@ -100,7 +100,7 @@ class ActivityTypeController extends Controller
     public function update(ActivityTypeRequest $request, $id)
     {
         $data = $request->only('type_name', 'state');
-//        $result = ActivityType::where('id', '=', $id)->update($data);
+
         if ($this->activityTypeRepo->update($id, $data)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料更新成功!'], Response::HTTP_OK);
         }
@@ -116,8 +116,20 @@ class ActivityTypeController extends Controller
     public function destroy($id)
     {
         if ($this->activityTypeRepo->delete($id)) {
+            return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料刪除成功2!'], Response::HTTP_OK);
+        }
+        return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function deleteMulti(Request $request) {
+        if($request->exists('ids') === false) {
+            return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
+        }
+
+        if($this->activityTypeRepo->deleteMulti($request->ids)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料刪除成功!'], Response::HTTP_OK);
         }
+
         return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
     }
 }

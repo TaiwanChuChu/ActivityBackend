@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\ActivityType;
-use App\Models\ActivityApply;
-use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ActivityBasicFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ActivityBasic extends Model
 {
     use HasFactory;
 
-    public static function newFactory()
+    public static function newFactory(): ActivityBasicFactory
     {
-        return \Database\Factories\ActivityBasicFactory::new();
+        return ActivityBasicFactory::new();
     }
 
-    public function activityType() {
+    public function activityType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(ActivityType::class);
     }
 
-    public function activityApplies() {
+    public function activityApplies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(ActivityApply::class, 'activity_id');
     }
 }

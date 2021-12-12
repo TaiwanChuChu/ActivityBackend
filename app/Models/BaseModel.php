@@ -8,17 +8,17 @@ class BaseModel extends Model
 {
     public $TargetId;
 
-    public function setTargetId($id)
-    {
-        return $this->TargetId = $id;
-    }
+//    public function setTargetId($id)
+//    {
+//        return $this->TargetId = $id;
+//    }
 
-    protected function setKeysForSaveQuery($query)
-    {
-        $query->where($this->getKeyName(), '=', $this->TargetId);
-
-        return $query;
-    }
+//    protected function setKeysForSaveQuery($query)
+//    {
+//        $query->where($this->getKeyName(), '=', $this->TargetId);
+//
+//        return $query;
+//    }
 
     /**
      * The "booted" method of the model.
