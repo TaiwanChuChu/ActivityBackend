@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ActivityBasicRequest extends FormRequest
 {
@@ -12,17 +13,13 @@ class ActivityBasicRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+
+    protected function defaultRule(): array
     {
         return [
             'activity_type_id' => 'required|integer',
@@ -30,15 +27,46 @@ class ActivityBasicRequest extends FormRequest
             'description' => 'required|max:400',
             'place' => 'required|max:50',
             'apply_limit' => 'required|numeric|min:0|max:255',
+            'apply_state' => 'required|boolean',
+        ];
+    }
+
+    protected function ruleByPost(): array
+    {
+        return [
             'apply_sdate' => 'required|date|after:' . Carbon::now(),
             'apply_edate' => 'required|date|after:apply_sdate',
-            'apply_state' => 'required|boolean',
             'sdate' => 'required|date|after:apply_edate',
             'edate' => 'required|date|after:sdate',
         ];
     }
 
-    public function messages() {
+    protected function ruleByPut(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(Request $request): array
+    {
+        $rules = [];
+        switch ($request->method) {
+            case 'POST':
+                $rules = $this->ruleByPost();
+                break;
+            case 'PUT':
+                $rules = $this->ruleByPut();
+                break;
+        }
+        return array_filter(array_merge($this->defaultRule(), $rules));
+    }
+
+    public function messages(): array
+    {
         return [
             'required' => ':attribute欄位為必填欄位!',
             'min' => ':attribute最小限制為 :min!',
@@ -49,7 +77,7 @@ class ActivityBasicRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'activity_type_id' => '活動類別',

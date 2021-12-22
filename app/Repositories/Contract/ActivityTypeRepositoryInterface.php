@@ -7,4 +7,5 @@ namespace App\Repositories\Contract;
 interface ActivityTypeRepositoryInterface
 {
 //    public function findByTypeCode(): Model;
+    public function getActivityTypeOptions(): array;
 }

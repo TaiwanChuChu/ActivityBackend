@@ -12,6 +12,10 @@ class ActivityType extends BaseModel
         'id', 'type_code', 'type_name', 'state', 'CreateID'
     ];
 
+    // 使用狀態 state
+    const STATE_ENABLE = true;
+    const STATE_DISABLE = false;
+
     protected $casts = [
         'state' => 'boolean',
     ];
@@ -35,5 +39,15 @@ class ActivityType extends BaseModel
             'activity_type_id', // 中繼表的外來鍵欄位(對應自己)
             'activity_id', // 與中繼表關聯的表，跟中繼表對應用的外來鍵欄位(跟自己沒有直接關聯)
         );
+    }
+
+    public function scopeEnable($query)
+    {
+        return $query->where('state', '=', self::STATE_ENABLE);
+    }
+
+    public function scopeDisable($query)
+    {
+        return $query->where('state', '=', self::STATE_DISABLE);
     }
 }

@@ -34,11 +34,8 @@ class ActivityBasicCollection extends ResourceCollection
 //                        ],
                         [
                             'text' => '功能',
-                            'value' => 'id',
+                            'value' => 'actions',
                             'sortable' => false,
-                            // align: 'start',
-                            // filterable: false,
-                            // sortable: true,
                         ],
                         [
                             'text' => '活動類別',
@@ -71,7 +68,8 @@ class ActivityBasicCollection extends ResourceCollection
                         ],
                         [
                             'text' => '報名狀態',
-                            'value' => 'apply_state',
+                            'value' => 'apply_state_text',
+//                            'value' => 'apply_state',
                         ],
                         [
                             'text' => '活動時間起',

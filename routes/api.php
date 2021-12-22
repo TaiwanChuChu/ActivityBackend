@@ -28,11 +28,16 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
 });
 
 Route::middleware('auth:api')->prefix('activity')->group(function(){
-    Route::apiResource('ActivityType', 'ActivityTypeController');
     Route::delete('ActivityType/delete/Multi', 'ActivityTypeController@deleteMulti');
     Route::post('ActivityType/filter', 'ActivityTypeController@filter')->name('ActivityType.filter');
-    Route::apiResource('ActivityBasic', 'ActivityBasicController');
+    Route::apiResource('ActivityType', 'ActivityTypeController');
+
+    Route::get('ActivityBasic/create', 'ActivityBasicController@create')->name('ActivityBasic.create');
     Route::post('ActivityBasic/filter', 'ActivityBasicController@filter')->name('ActivityBasic.filter');
-    Route::apiResource('ActivityApply', 'ActivityApplyController');
+    Route::post('ActivityBasic/filter2', 'ActivityBasicController@filter2')->name('ActivityBasic.filter2');
+    Route::delete('ActivityBasic/delete/Multi', 'ActivityBasicController@deleteMulti');
+    Route::apiResource('ActivityBasic', 'ActivityBasicController');
+
     Route::post('ActivityApply/filter', 'ActivityApplyController@filter')->name('ActivityApply.filter');
+    Route::apiResource('ActivityApply', 'ActivityApplyController');
 });

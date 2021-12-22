@@ -35,7 +35,7 @@ class ActivityApplyController extends Controller
                 if ($request->filled('searchCondition.type_code')) {
                     $query->where('type_code', 'like', '%' . $request->searchCondition['type_code'] . '%');
                 }
-                $query->where('state', '=', '1');
+                $query->Enable();
             },
         ];
         $source = ActivityApply::with($with)

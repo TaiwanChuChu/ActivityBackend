@@ -12,4 +12,9 @@ class ActivityTypeRepo extends Repository implements ActivityTypeRepositoryInter
     {
         return ActivityType::class;
     }
+
+    public function getActivityTypeOptions(): array
+    {
+        return $this->model::Enable()->select('id AS value', 'type_name AS text')->get()->toArray();
+    }
 }
