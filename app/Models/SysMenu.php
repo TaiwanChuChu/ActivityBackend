@@ -9,10 +9,6 @@ class SysMenu extends Model
 {
     use HasFactory;
 
-    public static function whereExists(\Closure $param)
-    {
-    }
-
     public function parent()
     {
         return $this->belongsTo(self::class, 'upper_id');

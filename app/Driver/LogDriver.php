@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace App\Driver;
 
-class LogHandler
+class LogDriver
 {
 
 }

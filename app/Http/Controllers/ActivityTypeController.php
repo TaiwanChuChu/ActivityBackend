@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\IDataTable;
 use App\Models\ActivityType;
 use App\Models\User;
 use App\Repositories\ActivityTypeRepo;
@@ -19,11 +20,13 @@ class ActivityTypeController extends Controller
     /**
      * @var ActivityTypeRepo
      */
-    private $activityTypeRepo;
+    private $_activityTypeRepo;
+    private $_dataTable;
 
-    public function __construct(ActivityTypeRepositoryInterface $activityTypeRepository)
+    public function __construct(ActivityTypeRepositoryInterface $activityTypeRepository, IDataTable $dataTable)
     {
-        $this->activityTypeRepo = $activityTypeRepository;
+        $this->_activityTypeRepo = $activityTypeRepository;
+        $this->_dataTable = $dataTable;
     }
 
     /**
@@ -49,18 +52,7 @@ class ActivityTypeController extends Controller
             $source->where('type_name', 'like', '%' . $request->searchCondition['q_type_name'] . '%');
         }
 
-        $options = $request->options;
-
-        $request->merge(['total' => $source->count()]);
-        $sortDesc = $options['sortDesc'] ? $options['sortDesc'][0] : true;
-        $sortBy = $options['sortBy'] ? $options['sortBy'][0] : 'id';
-
-        $page = $options['page'] ?? 0;
-        $itemPage = $options['itemsPerPage'] ?? 10;
-        $skip = $page > 1 ? ($page - 1) * $itemPage : 0;
-
-
-        return (new ActivityTypeCollection($source->skip($skip)->take($itemPage)->orderBy($sortBy, ($sortDesc ? 'DESC' : 'ASC'))->get()));
+        return $this->_dataTable->response($source, $request->options, ActivityTypeCollection::class);
     }
 
     /**
@@ -73,7 +65,7 @@ class ActivityTypeController extends Controller
     {
         $data = $request->only('type_code', 'type_name', 'state');
 
-        if ($this->activityTypeRepo->create($data)) {
+        if ($this->_activityTypeRepo->create($data)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料新增成功!'], Response::HTTP_OK);
         }
         return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料新增失敗!'], Response::HTTP_BAD_REQUEST);
@@ -87,7 +79,7 @@ class ActivityTypeController extends Controller
      */
     public function show($id)
     {
-        return (new ActivityTypeResource($this->activityTypeRepo->findById($id)));
+        return (new ActivityTypeResource($this->_activityTypeRepo->findById($id)));
     }
 
     /**
@@ -101,7 +93,7 @@ class ActivityTypeController extends Controller
     {
         $data = $request->only('type_name', 'state');
 
-        if ($this->activityTypeRepo->update($id, $data)) {
+        if ($this->_activityTypeRepo->update($id, $data)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料更新成功!'], Response::HTTP_OK);
         }
         return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料更新失敗!'], Response::HTTP_BAD_REQUEST);
@@ -115,7 +107,7 @@ class ActivityTypeController extends Controller
      */
     public function destroy($id)
     {
-        if ($this->activityTypeRepo->delete($id)) {
+        if ($this->_activityTypeRepo->delete($id)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料刪除成功2!'], Response::HTTP_OK);
         }
         return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
@@ -126,7 +118,7 @@ class ActivityTypeController extends Controller
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
         }
 
-        if($this->activityTypeRepo->deleteMulti($request->ids)) {
+        if($this->_activityTypeRepo->deleteMulti($request->ids)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料刪除成功!'], Response::HTTP_OK);
         }
 

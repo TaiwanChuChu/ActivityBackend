@@ -29,7 +29,7 @@ class ActivityAppliesResource extends JsonResource
             }),
             'created_at' => Carbon::parse($this->created_at)->toDateTimeString(),
             'activityBasics' => new ActivityBasicResource($this->whenLoaded('activityBasics')),
-            'activityTypes' => (new ActivityTypeCollection($this->whenLoaded('activityTypes')))[0],
+            'activityTypes' => (new ActivityTypeCollection($this->whenLoaded('activityTypes'))),
         ];
     }
 }

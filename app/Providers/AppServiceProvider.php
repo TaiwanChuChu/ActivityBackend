@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Components\DataTable;
+use App\Components\IDataTable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(IDataTable::class, function ($app) {
+            return new DataTable();
+        });
     }
 
     /**
