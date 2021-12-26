@@ -44,13 +44,14 @@ abstract class Repository implements RepositoryInterface
         return $this->model->create($data) instanceof \Illuminate\Database\Eloquent\Model;
     }
 
-    public function update($id, array $data): bool
+    public function update(array $data, $id): bool
     {
-        return tap($this->model->where($this->model->getKeyName(), '=', $id)->first(), function ($instance) use ($data) {
-            if($instance) {
-                $instance->fill($data)->save();
-            }
-        }) != null;
+        return tap($this->model->where($this->model->getKeyName(), '=', $id)->first(),
+                function ($instance) use ($data) {
+                    if ($instance) {
+                        $instance->fill($data)->save();
+                    }
+                }) != null;
     }
 
     public function delete($id): bool
@@ -60,7 +61,7 @@ abstract class Repository implements RepositoryInterface
 
     public function deleteMulti(array $ids): bool
     {
-        if(count($ids) <= 0) {
+        if (count($ids) <= 0) {
             return false;
         }
         return $this->model->destroy($ids) > 0;

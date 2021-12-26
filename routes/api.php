@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function(ActivityTypeRepositoryInterface $activityTypeRepository) {
     dd(123456);
 });
+
 Route::get('/file/{encode_name}', 'FileStorageController@renderFile')->name('file.render');
 Route::post('/user', 'UserController@store')->name('user.store');
 
@@ -25,6 +26,12 @@ Route::middleware('auth:api')->prefix('user')->group(function(){
     Route::put('/{user}', 'UserController@update')->name('user.update');
     Route::post('/logout', 'UserController@logout')->name('user.logout');
     Route::get('/menus', 'MenuController@getMenuListByUser')->name('user.menus');
+});
+
+Route::middleware('auth:api')->prefix('a01')->group(function(){
+    Route::delete('a01110/delete/Multi', 'A01\A01110Controller@deleteMulti');
+    Route::post('a01110/filter', 'A01\A01110Controller@filter')->name('ActivityType.filter');
+    Route::apiResource('a01110', 'A01\A01110Controller');
 });
 
 Route::middleware('auth:api')->prefix('activity')->group(function(){

@@ -48,6 +48,12 @@ return [
                 'level' => 'debug',
                 'days' => 14,
             ],
+            'info' => [
+                'driver' => 'daily',
+                'path' => storage_path('logs/system/info/system-info.log'),
+                'level' => 'info',
+                'days' => 14,
+            ],
         ],
         'stack' => [
             'driver' => 'stack',

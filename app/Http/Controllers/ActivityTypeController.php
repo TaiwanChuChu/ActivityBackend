@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\DatatableOptions;
 use App\Components\IDataTable;
 use App\Models\ActivityType;
 use App\Models\User;
@@ -52,7 +53,7 @@ class ActivityTypeController extends Controller
             $source->where('type_name', 'like', '%' . $request->searchCondition['q_type_name'] . '%');
         }
 
-        return $this->_dataTable->response($source, $request->options, ActivityTypeCollection::class);
+        return $this->_dataTable->response($source, ActivityTypeCollection::class);
     }
 
     /**
@@ -113,12 +114,13 @@ class ActivityTypeController extends Controller
         return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
     }
 
-    public function deleteMulti(Request $request) {
-        if($request->exists('ids') === false) {
+    public function deleteMulti(Request $request)
+    {
+        if ($request->exists('ids') === false) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_BAD_REQUEST, 'message' => '資料刪除失敗!'], Response::HTTP_BAD_REQUEST);
         }
 
-        if($this->_activityTypeRepo->deleteMulti($request->ids)) {
+        if ($this->_activityTypeRepo->deleteMulti($request->ids)) {
             return response()->json(['status' => 'ok', 'code' => Response::HTTP_OK, 'message' => '資料刪除成功!'], Response::HTTP_OK);
         }
 

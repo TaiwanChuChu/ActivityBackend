@@ -8,4 +8,6 @@ interface ActivityTypeRepositoryInterface
 {
 //    public function findByTypeCode(): Model;
     public function getActivityTypeOptions(): array;
+
+    public function filter(array $where);
 }
