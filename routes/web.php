@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/', function () {
+    return view('welcome');
+});
+
+Route::get('/vue', 'VueController@index')->name('vue.index');
+Route::post('/vue', 'VueController@post')->name('vue.post');
+
