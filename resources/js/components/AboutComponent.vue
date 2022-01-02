@@ -1,10 +1,10 @@
 <template>
-  <div>
-      <h1>About.</h1>
-      <p>
-          It's a About Component.
-      </p>
-  </div>
+    <div id="AAABBBB">
+        <h1>About.</h1>
+        <p>
+            It's a About Component.
+        </p>
+    </div>
 </template>
 
 <script>

@@ -2,9 +2,11 @@
 
 namespace App\Components;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class DataTable implements IDataTable
 {
-    public function response(\Illuminate\Database\Eloquent\Builder $source, array $options, $collection)
+    public function response(Builder $source, array $options, $collection)
     {
         request()->merge(['total' => $source->count()]);
         // todo: 多排序
