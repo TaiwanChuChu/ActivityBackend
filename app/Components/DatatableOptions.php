@@ -39,8 +39,8 @@ class DatatableOptions
         tap(collect($options), function ($options) {
             $this->_page = $options->get('page', 0);
             $this->_itemsPerPage = $options->get('itemsPerPage', 0);
-            $this->_sortBy = $options->get('sortBy');
-            $this->_sortDesc = $options->get('sortDesc');
+            $this->_sortBy = $options->get('sortBy', []);
+            $this->_sortDesc = $options->get('sortDesc', []);
         });
 
     }

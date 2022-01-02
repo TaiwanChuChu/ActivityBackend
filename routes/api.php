@@ -18,6 +18,7 @@ Route::get('/test', function(ActivityTypeRepositoryInterface $activityTypeReposi
     dd(123456);
 });
 
+
 Route::get('/file/{encode_name}', 'FileStorageController@renderFile')->name('file.render');
 Route::post('/user', 'UserController@store')->name('user.store');
 
